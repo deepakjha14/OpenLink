@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div id="one" class="app">
+            <h1>Apache Cordova</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Devicee</p>
+                <p class="event received">The Device is Ready ok !!!</p>
+            </div>
+        </div>
+		<div id="showNext" style="display:none">
+			<p class="newdj">This is after device load show me !!!</p>
+			Select A Text File :) :::
+			<input type="file" id="selectFile" name="files"></input><br/>
+			<button type="button" name="upload me" id="upload" onclick="readFile()">Upload Me</button>
+			<pre id="linkDisplay"></pre>
+		</div>
+        <script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/calendar.js"></script>
+		<script type="text/javascript" charset="utf-8" src="www/calendar.js"></script>
+		<script type="text/javascript" charset="utf-8" src="calendar.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            appk.initialize();
+			
+		function readFile(){
+			//alert("aa gaye dj 2 :D ");
+			var fn = document.getElementById('selectFile').files[0];
+			readDataUrl(fn);
+			//tableCreate();
+		};
+		
+		function readDataUrl(file) {
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+			var paneId = document.getElementById('linkDisplay');
+			var samArr = reader.result.split("\n");
+			for (var i =0;i<samArr.length;i++){				
+					var samDiv = document.createElement('div');
+					var alink = document.createElement('a');					
+					var tbl     = document.createElement("table");
+					tbl.id="tab1";
+					var tblBody = document.createElement("tbody");
+					alink.target='_blank';
+					alink.href =  "http://"+samArr[i]; // Insted of calling setAttribute 					
+					alink.innerHTML = "Click Link :"+(i+1)+" "+samArr[i]; // <a>INNER_TEXT</a> // Add name to left div
+					tableCreate(alink,samArr[i],tbl,tblBody);
+					//paneId.appendChild(alink);
+					//paneId.appendChild(document.createElement('br'));				
+				}
+			}
+		   reader.readAsText(file);
+		};
+		
+		function tableCreate(alink,linkName,tbl,tblBody){
+        //body reference 
+        var body = document.getElementsByTagName("body")[0];
+
+        // create elements <table> and a <tbody>
+		/**************************/
+        // cells creation
+        // table row creation
+        var row = document.createElement("tr");
+
+        for (var i = 0; i <=4; i++){
+		var varUrl = alink;
+            // create element <td> and text node 
+            //Make text node the contents of <td> element
+            // put <td> at end of the table row// here the alink can be added to the celltext !!!
+	        var cell = document.createElement("td");   
+			cell.setAttribute("width","100px");
+			cell.setAttribute("height","5%");
+			var cellText = document.createElement("input");
+			
+			switch (i)
+			{
+			case 0:
+				cell.appendChild(alink);				
+				break;
+			case 1:				
+				cellText.setAttribute("name", varUrl);
+				cellText.setAttribute("type", "button");
+				cellText.setAttribute("value", "chrome");
+				cellText.setAttribute("id", "chrome");
+				cellText.setAttribute("onclick", "appk.addToCal(this);");
+				//cell.appendChild(cellText);
+				break;
+			case 2:				
+				cellText.setAttribute("name", "mozilla");
+				cellText.setAttribute("type", "button");
+				cellText.setAttribute("value", "mozilla");
+				break;
+			case 3:				
+				cellText.setAttribute("name", "dolphin");
+				cellText.setAttribute("type", "button");
+				cellText.setAttribute("value", "dolphin");
+				break;
+			case 4:			
+				cellText.setAttribute("name", "OtBrowser");
+				cellText.setAttribute("type", "button");
+				cellText.setAttribute("value", "OtBrowser");
+				break;
+			default:
+				cellText.name = "Other Browser";
+				break;
+			}
+			if(i!=0){
+				cell.appendChild(cellText);
+			}
+            row.appendChild(cell);
+        }
+        //row added to end of table body
+        tblBody.appendChild(row);
+
+        // append the <tbody> inside the <table>
+        tbl.appendChild(tblBody);
+
+        // put <table> in the <body>
+        body.appendChild(tbl);
+
+        // tbl border attribute to 
+        tbl.setAttribute("border", "2");
+		};
+		</script>
+		
+    </body>
+</html>
